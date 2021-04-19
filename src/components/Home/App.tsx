@@ -13,7 +13,7 @@ const Demo: React.FC = () => {
   const [value, setValue] = useState<string>('')
   const [maxText] = useState<number>(20)
 
-  const [voidPerson, setVoidPerson] = useState<number>(0)
+  const [voidPerson, setVoidPerson] = useState<number>(1)
   const [speech, setSpeech] = useState<number>(1.0)
 
   const [source, setSource] = useState<string>('')
@@ -46,7 +46,7 @@ const Demo: React.FC = () => {
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
     console.log('res', response)
     if (response && response?.error_code === 0) {
-      setSource(response.data.url);
+      setSource(response.data.url)
       ref.current?.play()
     }
   }

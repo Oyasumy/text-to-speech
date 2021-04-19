@@ -1,32 +1,40 @@
 import { TypeHeader, typeRes } from "../hook/type";
+var axios = require("axios");
+var qs = require("qs");
 
 export const handlePostTextToSpeech = async (input: string, speaker: number, speech: number) => {
-  var myHeaders = new Headers();
-  myHeaders.append("apikey", "s6GopJmGpsTiGyHiUYm252RsgH960r8Y");
-  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("par", input, speaker, speech);
 
-  var urlencoded = new URLSearchParams();
-  urlencoded.append("input", `"${input}"`);
-  urlencoded.append("speaker_id", `${speaker}`);
-  urlencoded.append("speed", `${speech}`);
-
-  var requestOptions: TypeHeader = {
-    method: "POST",
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: "follow",
-  };
- 
-  var data: typeRes = {
+  var result: typeRes = {
     error_code: -1,
     data: { url: "" },
   };
-  await fetch("https://api.zalo.ai/v1/tts/synthesize", requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      data = result;
-    })
-    .catch((error) => console.log("error", error));
 
-  return data;
+  var data = qs.stringify({
+    "input": `${input}`,
+    "speaker_id": `${speaker}`,
+    "speed": `${speech}`,
+  });
+  var config = {
+    method: "post",
+    url: "https://api.zalo.ai/v1/tts/synthesize",
+    headers: {
+      "apikey": "s6GopJmGpsTiGyHiUYm252RsgH960r8Y",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: data,
+  };
+
+  await axios(config)
+    .then(function (response: any) {
+      console.log(' data ',response.data);
+      result.data.url = response.data.data.url;
+      result.error_code = response.data.error_code;
+      
+    })
+    .catch(function (error: Error) {
+      console.log(error);
+    });
+
+  return result;
 };

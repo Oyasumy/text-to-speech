@@ -1,7 +1,7 @@
 export type TypeHeader = {
   method: string;
   headers: Headers;
-  body: URLSearchParams;
+  body: BodyInit;
   redirect: RequestRedirect | undefined;
 };
 
