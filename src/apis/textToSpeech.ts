@@ -14,6 +14,7 @@ export const handlePostTextToSpeech = async (input: string, speaker: number, spe
     "input": `${input}`,
     "speaker_id": `${speaker}`,
     "speed": `${speech}`,
+    "encode_type": 0,
   });
   var config = {
     method: "post",
@@ -27,10 +28,8 @@ export const handlePostTextToSpeech = async (input: string, speaker: number, spe
 
   await axios(config)
     .then(function (response: any) {
-      console.log(' data ',response.data);
       result.data.url = response.data.data.url;
       result.error_code = response.data.error_code;
-      
     })
     .catch(function (error: Error) {
       console.log(error);

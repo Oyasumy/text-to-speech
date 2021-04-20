@@ -5,27 +5,27 @@ $tablet-width: 768px;
 $desktop-width: 1024px;
 
 @mixin mobile {
-    @media (max-width: #{$mobile-width + 30px}) {
-        @content;
-    }
+  @media (max-width: #{$mobile-width + 30px}) {
+    @content;
+  }
 }
 
 @mixin mobile-large {
-    @media (min-width: #{$mobile-width + 31px}) and (max-width: #{$tablet-width - 1px}) {
-        @content;
-    }
+  @media (min-width: #{$mobile-width + 31px}) and (max-width: #{$tablet-width - 1px}) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width + 1px}) {
-        @content;
-    }
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width + 1px}) {
+    @content;
+  }
 }
 
 @mixin desktop {
-    @media (min-width: #{$desktop-width +2px}) {
-        @content;
-    }
+  @media (min-width: #{$desktop-width +2px}) {
+    @content;
+  }
 }
 
 .main-container {
@@ -35,8 +35,11 @@ $desktop-width: 1024px;
   align-items: center;
   text-align: center;
   min-height: 100vh;
-  max-width: 80%;
+  max-width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
   margin: auto;
+  overflow: hidden;
 
   .button-group {
     align-self: flex-end;
@@ -50,12 +53,13 @@ $desktop-width: 1024px;
     margin-right: 10px;
     margin-top: 10px;
 
-   @include mobile-large(){
-    width: 100px;
-   }
-   @include mobile(){
-    width: 100px;
-   }
+    @include mobile-large() {
+      width: 100px;
+    }
+
+    @include mobile() {
+      width: 100px;
+    }
   }
 
   .button-style {
@@ -63,14 +67,30 @@ $desktop-width: 1024px;
     width: 150px;
     text-align: left;
     margin-right: 10px;
-    @include mobile-large(){
+
+    @include mobile-large() {
       width: 100px;
-     }
-     @include mobile(){
+    }
+
+    @include mobile() {
       width: 100px;
-     }
+    }
   }
-  .mt-10{
+
+  .mt-10 {
     margin-top: 10px;
+  }
+
+  .glass-morphine {
+    display: inline-block;
+    background: rgba(255, 255, 255, .2);
+    padding: 2em;
+    border-radius: 5px;
+    position: relative;
+    z-index: -99;
+    backdrop-filter: blur(40px);
+    border: solid 2px transparent;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, .03);
   }
 }

@@ -8,7 +8,9 @@ import {
   DownloadOutlined,
   StopOutlined,
 } from '@ant-design/icons'
+
 import './App.scss'
+import anime from 'animejs'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -27,7 +29,7 @@ const Demo: React.FC = () => {
   const [textButton, setTextButton] = useState<string>(VALUE_BUTTON.STOP)
 
   const [source, setSource] = useState<string>('')
-  const ref = useRef<HTMLAudioElement | null>(null)
+  const ref = useRef<HTMLVideoElement | null>(null)
   const onChange = ({ target: { value } }: { target: { value: string } }) => {
     // Check max Word
     if (value.split(' ').length > maxText) return
@@ -43,7 +45,7 @@ const Demo: React.FC = () => {
   }
 
   const checkAudioIsPlaying = () => {
-    if (!ref.current?.paused) {
+    if (ref.current?.paused === false) {
       ref.current?.pause()
       setTextButton(VALUE_BUTTON.CONTINUE)
     } else {
@@ -54,29 +56,70 @@ const Demo: React.FC = () => {
 
   const callApi = async () => {
     setTextButton(VALUE_BUTTON.STOP)
-    setSource('')
-    console.log('comm-- ', value, voidPerson, speech)
+    // setSource('')
 
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
-    console.log('res', response)
-    if (parseInt(response?.error_code.toString()) === 0) {
-      console.log('set ok')
 
+    if (parseInt(response?.error_code.toString()) === 0) {
       setSource(response.data.url)
+      console.log('ok', ref.current?.paused)
+
+      var playPromise = ref.current?.play()
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {})
+          .catch((error) => {
+            console.log('err', error)
+            console.log('source', source)
+          })
+      }
     }
   }
+  // useEffect(() => {
+  //   console.log('effect pause: ', ref.current?.paused)
+  //   if (source) {
+  //     console.log('speak ok', source)
+
+  //     ref.current?.play()
+  //   } else {
+  //     console.log('speak pause')
+
+  //     ref.current?.pause()
+  //   }
+  //   // console.log('data pause: ', ref.current?.paused)
+  // }, [source])
 
   useEffect(() => {
-    if (source) {
-      console.log('speak ok', source)
+    const container = document.querySelector<Element>('.container-block')
 
-      ref.current?.play()
-    } else {
-      console.log('speak pause')
+    for (let i = 0; i < 5; i++) {
+      const blocks = document.createElement('div')
 
-      ref.current?.pause()
+      blocks.classList.toggle('glass-morphine')
+      container?.appendChild(blocks)
     }
-  }, [source])
+
+    function animatedBlock() {
+      anime({
+        targets: '.glass-morphine',
+        translateX: function () {
+          return anime.random(-700, 700)
+        },
+        translateY: function () {
+          return anime.random(-700, 700)
+        },
+        scale: function () {
+          return anime.random(1, 3)
+        },
+        easing: 'linear',
+        duration: 3000,
+        delay: anime.stagger(5),
+        complete: animatedBlock,
+      })
+    }
+    // animatedBlock()
+  }, [])
   return (
     <div className="main-container">
       <TextArea
@@ -86,13 +129,7 @@ const Demo: React.FC = () => {
         autoSize={{ maxRows: 7, minRows: 7 }}
         rows={7}
       />
-      <audio
-        controls
-        ref={ref}
-        id="audio"
-        src={source}
-        className="mt-10"
-      ></audio>
+      
       <div className="button-group">
         {/* Select Void */}
         <Select
@@ -150,6 +187,21 @@ const Demo: React.FC = () => {
           DownLoad
         </Button> */}
       </div>
+      {source === '' ? null : (
+        <audio
+          // media-player="audioPlayer"
+          crossOrigin="anonymous"
+          controls
+          ref={ref}
+          src={source}
+          className="mt-10"
+          
+          // name="media"
+        >
+          <source src={source} type="audio/mp4" />
+        </audio>
+      )}
+      <div className="container-block"></div>
     </div>
   )
 }
