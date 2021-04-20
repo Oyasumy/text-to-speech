@@ -3,15 +3,19 @@ import { useRef, useState } from 'react'
 import { handlePostTextToSpeech } from '../../apis/textToSpeech'
 import { voidData, speechRead } from '../../constants/value'
 import { Input, Select, Button } from 'antd'
-import { AudioOutlined, StopOutlined } from '@ant-design/icons'
+import {
+  AudioOutlined,
+  DownloadOutlined,
+  StopOutlined,
+} from '@ant-design/icons'
 import './App.scss'
 
 const { TextArea } = Input
 const { Option } = Select
 
-enum VALUE_BUTTON{
-  CONTINUE="Tiếp tục",
-  STOP="Dừng"
+enum VALUE_BUTTON {
+  CONTINUE = 'Tiếp tục',
+  STOP = 'Dừng',
 }
 const Demo: React.FC = () => {
   const [value, setValue] = useState<string>('')
@@ -49,7 +53,8 @@ const Demo: React.FC = () => {
   }
 
   const callApi = async () => {
-    setTextButton(VALUE_BUTTON.STOP);
+    setTextButton(VALUE_BUTTON.STOP)
+    setSource('')
     console.log('comm-- ', value, voidPerson, speech)
 
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
@@ -63,9 +68,13 @@ const Demo: React.FC = () => {
 
   useEffect(() => {
     if (source) {
-      console.log("speak ok",source);
-      
+      console.log('speak ok', source)
+
       ref.current?.play()
+    } else {
+      console.log('speak pause')
+
+      ref.current?.pause()
     }
   }, [source])
   return (
@@ -77,6 +86,13 @@ const Demo: React.FC = () => {
         autoSize={{ maxRows: 7, minRows: 7 }}
         rows={7}
       />
+      <audio
+        controls
+        ref={ref}
+        id="audio"
+        src={source}
+        className="mt-10"
+      ></audio>
       <div className="button-group">
         {/* Select Void */}
         <Select
@@ -107,7 +123,7 @@ const Demo: React.FC = () => {
           className="button-style"
           icon={<StopOutlined />}
           type="ghost"
-          disabled={source.length === 0 ? true : false}
+          disabled={source.length === 0 || value.length === 0 ? true : false}
           onClick={() => checkAudioIsPlaying()}
         >
           {textButton}
@@ -122,8 +138,18 @@ const Demo: React.FC = () => {
         >
           Đọc
         </Button>
+        {/* Button Download */}
+        {/* <Button
+          icon={<DownloadOutlined />}
+          type="dashed"
+          danger
+          block
+          className="mt-10"
+          onClick={() => downloadFile()}
+        >
+          DownLoad
+        </Button> */}
       </div>
-      <audio ref={ref} id="audio" src={source}></audio>
     </div>
   )
 }
