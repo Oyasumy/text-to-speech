@@ -1,25 +1,19 @@
 import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
-import { handlePostTextToSpeech } from '../../apis/textToSpeech'
-import { voidData, speechRead } from '../../constants/value'
 import { Input, Select, Button } from 'antd'
-import {
-  AudioOutlined,
-  DownloadOutlined,
-  StopOutlined,
-} from '@ant-design/icons'
+import { AudioOutlined, StopOutlined } from '@ant-design/icons'
+import anime from 'animejs'
 
 import './App.scss'
-import anime from 'animejs'
+import { handlePostTextToSpeech } from '../../apis/textToSpeech'
+import { voidData, speechRead } from '../../constants/value'
+import { VALUE_BUTTON } from '../../hook/type'
 
 const { TextArea } = Input
 const { Option } = Select
 
-enum VALUE_BUTTON {
-  CONTINUE = 'Tiếp tục',
-  STOP = 'Dừng',
-}
 const Demo: React.FC = () => {
+  // Create State
   const [value, setValue] = useState<string>('')
   const [maxText] = useState<number>(2000)
 
@@ -29,22 +23,31 @@ const Demo: React.FC = () => {
   const [textButton, setTextButton] = useState<string>(VALUE_BUTTON.STOP)
 
   const [source, setSource] = useState<string>('')
+  // Create Ref
   const ref = useRef<HTMLVideoElement | null>(null)
+
+  // Function
   const onChange = ({ target: { value } }: { target: { value: string } }) => {
     // Check max Word
     if (value.split(' ').length > maxText) return
 
     setValue(value)
   }
+
+  // Set value Void Person
   const handleVoidChange = (value: string) => {
     setVoidPerson(parseFloat(value))
   }
 
+  // Set value Speech
   const handleSpeechChange = (value: number) => {
     setSpeech(value)
   }
 
+  // Action Button
   const checkAudioIsPlaying = () => {
+    // If audio paused = false => set pause = true, set text button = Tiep Tuc
+    // Else set text button = Dung, set audio = play
     if (ref.current?.paused === false) {
       ref.current?.pause()
       setTextButton(VALUE_BUTTON.CONTINUE)
@@ -54,16 +57,19 @@ const Demo: React.FC = () => {
     }
   }
 
+  // Action Button Doc
   const callApi = async () => {
+    // Set text button = Dung
     setTextButton(VALUE_BUTTON.STOP)
-    // setSource('')
 
+    // Call API get file audio type WAV
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
 
+    // Check data response was success
     if (parseInt(response?.error_code.toString()) === 0) {
       setSource(response.data.url)
-      console.log('ok', ref.current?.paused)
 
+      // Function play() is a promise so I used then() and catch()
       var playPromise = ref.current?.play()
 
       if (playPromise !== undefined) {
@@ -71,25 +77,14 @@ const Demo: React.FC = () => {
           .then((_) => {})
           .catch((error) => {
             console.log('err', error)
-            console.log('source', source)
+            setSource("")
+            // console.log('source', source)
           })
       }
     }
   }
-  // useEffect(() => {
-  //   console.log('effect pause: ', ref.current?.paused)
-  //   if (source) {
-  //     console.log('speak ok', source)
 
-  //     ref.current?.play()
-  //   } else {
-  //     console.log('speak pause')
-
-  //     ref.current?.pause()
-  //   }
-  //   // console.log('data pause: ', ref.current?.paused)
-  // }, [source])
-
+  // Function Init Animation background
   useEffect(() => {
     const container = document.querySelector<Element>('.container-block')
 
@@ -118,10 +113,11 @@ const Demo: React.FC = () => {
         complete: animatedBlock,
       })
     }
-    // animatedBlock()
+    animatedBlock()
   }, [])
   return (
     <div className="main-container">
+      {/* Text Area */}
       <TextArea
         value={value}
         onChange={(e) => onChange(e)}
@@ -129,7 +125,7 @@ const Demo: React.FC = () => {
         autoSize={{ maxRows: 7, minRows: 7 }}
         rows={7}
       />
-      
+
       <div className="button-group">
         {/* Select Void */}
         <Select
@@ -175,28 +171,15 @@ const Demo: React.FC = () => {
         >
           Đọc
         </Button>
-        {/* Button Download */}
-        {/* <Button
-          icon={<DownloadOutlined />}
-          type="dashed"
-          danger
-          block
-          className="mt-10"
-          onClick={() => downloadFile()}
-        >
-          DownLoad
-        </Button> */}
+        {/* Media Audio */}
       </div>
       {source === '' ? null : (
         <audio
-          // media-player="audioPlayer"
           crossOrigin="anonymous"
           controls
           ref={ref}
           src={source}
           className="mt-10"
-          
-          // name="media"
         >
           <source src={source} type="audio/mp4" />
         </audio>

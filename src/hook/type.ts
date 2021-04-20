@@ -9,3 +9,8 @@ export type typeRes = {
   error_code: number;
   data: { url: string };
 };
+
+export enum VALUE_BUTTON {
+  CONTINUE = 'Tiếp tục',
+  STOP = 'Dừng',
+}
