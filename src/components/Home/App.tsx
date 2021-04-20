@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { handlePostTextToSpeech } from '../../apis/textToSpeech'
 import { voidData, speechRead } from '../../constants/value'
@@ -9,12 +9,18 @@ import './App.scss'
 const { TextArea } = Input
 const { Option } = Select
 
+enum VALUE_BUTTON{
+  CONTINUE="Tiếp tục",
+  STOP="Dừng"
+}
 const Demo: React.FC = () => {
   const [value, setValue] = useState<string>('')
-  const [maxText] = useState<number>(20)
+  const [maxText] = useState<number>(2000)
 
   const [voidPerson, setVoidPerson] = useState<number>(1)
   const [speech, setSpeech] = useState<number>(1.0)
+
+  const [textButton, setTextButton] = useState<string>(VALUE_BUTTON.CONTINUE)
 
   const [source, setSource] = useState<string>('')
   const ref = useRef<HTMLAudioElement | null>(null)
@@ -35,7 +41,9 @@ const Demo: React.FC = () => {
   const checkAudioIsPlaying = () => {
     if (!ref.current?.paused) {
       ref.current?.pause()
+      setTextButton(VALUE_BUTTON.CONTINUE)
     } else {
+      setTextButton(VALUE_BUTTON.STOP)
       ref.current?.play()
     }
   }
@@ -45,21 +53,24 @@ const Demo: React.FC = () => {
 
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
     console.log('res', response)
-    if (response && response?.error_code === 0) {
+    if (parseInt(response?.error_code.toString()) === 0) {
+      console.log('set ok')
+
       setSource(response.data.url)
-      ref.current?.play()
     }
   }
 
+  useEffect(() => {
+    if (source) {
+      console.log("speak ok",source);
+      
+      ref.current?.play()
+    }
+  }, [source])
   return (
     <div className="main-container">
       <TextArea
         value={value}
-        onPaste={(e) => {
-          document.execCommand('paste')
-          setValue(value + e.clipboardData.getData('Text'))
-          // console.log('vv', e.target);
-        }}
         onChange={(e) => onChange(e)}
         placeholder="Controlled autosize"
         autoSize={{ maxRows: 7, minRows: 7 }}
@@ -98,7 +109,7 @@ const Demo: React.FC = () => {
           disabled={source.length === 0 ? true : false}
           onClick={() => checkAudioIsPlaying()}
         >
-          {ref.current?.paused ? 'Dừng' : 'Tiếp tục'}
+          {textButton}
         </Button>
         {/* Button Start */}
         <Button
