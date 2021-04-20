@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/text-to-speech/static/css/main.a5623dff.chunk.css",
-    "main.js": "/text-to-speech/static/js/main.d0c002e5.chunk.js",
-    "main.js.map": "/text-to-speech/static/js/main.d0c002e5.chunk.js.map",
-    "runtime-main.js": "/text-to-speech/static/js/runtime-main.f4814b99.js",
-    "runtime-main.js.map": "/text-to-speech/static/js/runtime-main.f4814b99.js.map",
-    "static/css/2.289e503f.chunk.css": "/text-to-speech/static/css/2.289e503f.chunk.css",
-    "static/js/2.2f88129a.chunk.js": "/text-to-speech/static/js/2.2f88129a.chunk.js",
-    "static/js/2.2f88129a.chunk.js.map": "/text-to-speech/static/js/2.2f88129a.chunk.js.map",
-    "static/js/3.5e22ee2b.chunk.js": "/text-to-speech/static/js/3.5e22ee2b.chunk.js",
-    "static/js/3.5e22ee2b.chunk.js.map": "/text-to-speech/static/js/3.5e22ee2b.chunk.js.map",
+    "main.css": "/text-to-speech/static/css/main.1d7d9a73.chunk.css",
+    "main.js": "/text-to-speech/static/js/main.d2b451f2.chunk.js",
+    "main.js.map": "/text-to-speech/static/js/main.d2b451f2.chunk.js.map",
+    "runtime-main.js": "/text-to-speech/static/js/runtime-main.bcfe67f2.js",
+    "runtime-main.js.map": "/text-to-speech/static/js/runtime-main.bcfe67f2.js.map",
+    "static/css/2.c51d807b.chunk.css": "/text-to-speech/static/css/2.c51d807b.chunk.css",
+    "static/js/2.fa459c59.chunk.js": "/text-to-speech/static/js/2.fa459c59.chunk.js",
+    "static/js/2.fa459c59.chunk.js.map": "/text-to-speech/static/js/2.fa459c59.chunk.js.map",
+    "static/js/3.d1732635.chunk.js": "/text-to-speech/static/js/3.d1732635.chunk.js",
+    "static/js/3.d1732635.chunk.js.map": "/text-to-speech/static/js/3.d1732635.chunk.js.map",
     "index.html": "/text-to-speech/index.html",
-    "static/css/2.289e503f.chunk.css.map": "/text-to-speech/static/css/2.289e503f.chunk.css.map",
-    "static/css/main.a5623dff.chunk.css.map": "/text-to-speech/static/css/main.a5623dff.chunk.css.map",
-    "static/js/2.2f88129a.chunk.js.LICENSE.txt": "/text-to-speech/static/js/2.2f88129a.chunk.js.LICENSE.txt"
+    "static/css/2.c51d807b.chunk.css.map": "/text-to-speech/static/css/2.c51d807b.chunk.css.map",
+    "static/css/main.1d7d9a73.chunk.css.map": "/text-to-speech/static/css/main.1d7d9a73.chunk.css.map",
+    "static/js/2.fa459c59.chunk.js.LICENSE.txt": "/text-to-speech/static/js/2.fa459c59.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f4814b99.js",
-    "static/css/2.289e503f.chunk.css",
-    "static/js/2.2f88129a.chunk.js",
-    "static/css/main.a5623dff.chunk.css",
-    "static/js/main.d0c002e5.chunk.js"
+    "static/js/runtime-main.bcfe67f2.js",
+    "static/css/2.c51d807b.chunk.css",
+    "static/js/2.fa459c59.chunk.js",
+    "static/css/main.1d7d9a73.chunk.css",
+    "static/js/main.d2b451f2.chunk.js"
   ]
 }
