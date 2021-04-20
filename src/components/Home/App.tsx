@@ -20,7 +20,7 @@ const Demo: React.FC = () => {
   const [voidPerson, setVoidPerson] = useState<number>(1)
   const [speech, setSpeech] = useState<number>(1.0)
 
-  const [textButton, setTextButton] = useState<string>(VALUE_BUTTON.CONTINUE)
+  const [textButton, setTextButton] = useState<string>(VALUE_BUTTON.STOP)
 
   const [source, setSource] = useState<string>('')
   const ref = useRef<HTMLAudioElement | null>(null)
@@ -49,6 +49,7 @@ const Demo: React.FC = () => {
   }
 
   const callApi = async () => {
+    setTextButton(VALUE_BUTTON.STOP);
     console.log('comm-- ', value, voidPerson, speech)
 
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
