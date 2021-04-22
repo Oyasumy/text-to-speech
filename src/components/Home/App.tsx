@@ -61,6 +61,7 @@ const Demo: React.FC = () => {
   const callApi = async () => {
     // Set text button = Dung
     setTextButton(VALUE_BUTTON.STOP)
+    // setSource("")
 
     // Call API get file audio type WAV
     const response = await handlePostTextToSpeech(value, voidPerson, speech)
@@ -70,17 +71,11 @@ const Demo: React.FC = () => {
       setSource(response.data.url)
 
       // Function play() is a promise so I used then() and catch()
-      var playPromise = ref.current?.play()
-
-      if (playPromise !== undefined) {
-        playPromise
-          .then((_) => {})
-          .catch((error) => {
-            console.log('err', error)
-            setSource("")
-            // console.log('source', source)
-          })
-      }
+      if(ref.current){
+        ref.current.pause();
+        ref.current.load();
+        ref.current.play();
+    }
     }
   }
 
@@ -113,7 +108,7 @@ const Demo: React.FC = () => {
         complete: animatedBlock,
       })
     }
-    animatedBlock()
+    // animatedBlock()
   }, [])
   return (
     <div className="main-container">
@@ -173,17 +168,18 @@ const Demo: React.FC = () => {
         </Button>
         {/* Media Audio */}
       </div>
-      {source === '' ? null : (
-        <audio
-          crossOrigin="anonymous"
-          controls
-          ref={ref}
-          src={source}
-          className="mt-10"
-        >
-          <source src={source} type="audio/mp4" />
-        </audio>
-      )}
+      {/* {source === '' ? null : ( */}
+      <audio
+        // name="media"
+       
+        controls
+        ref={ref}
+        // src={source || ''}
+        className="mt-10"
+      >
+        <source src={source || ''} type="audio/wav" />
+      </audio>
+      {/* )} */}
       <div className="container-block"></div>
     </div>
   )
